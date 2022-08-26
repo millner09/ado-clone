@@ -1,25 +1,49 @@
+using Api.Extensions;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+ConfigureServices(builder);
 
 var app = builder.Build();
+ConfigureApp(app);
+app.Run();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+void ConfigureServices(WebApplicationBuilder builder)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var services = builder.Services;
+    services.AddControllers(opt =>
+    {
+        var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+        opt.Filters.Add(new AuthorizeFilter(policy));
+    });
+    //.AddFluentValidation(config =>
+    //{
+    //    config.RegisterValidatorsFromAssemblyContaining<ActivityValidator>();
+    //});    
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    services.AddEndpointsApiExplorer();
+
+    services.AddApplicationServices(builder.Configuration);
+    services.AddIdentityServices(builder.Configuration);
 }
 
-app.UseHttpsRedirection();
+void ConfigureApp(WebApplication app)
+{
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-app.UseAuthorization();
+    //app.UseHttpsRedirection();
+    app.UseCors("CorsPolicy");
 
-app.MapControllers();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
-app.Run();
+    app.MapControllers();
+}
