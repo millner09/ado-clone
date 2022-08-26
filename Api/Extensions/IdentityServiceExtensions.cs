@@ -1,14 +1,4 @@
-﻿using Api.Service;
-using Domain;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Api.Extensions
 {
@@ -16,28 +6,16 @@ namespace Api.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<AppUser>(opt =>
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
             {
-                opt.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<DataContext>()
-            .AddSignInManager<SignInManager<AppUser>>();
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opt =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
-                opt.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+                options.Authority = "https://millner.auth0.com/";
+                options.Audience = "https://amillner-bugtracker.com";
             });
-
-            services.AddScoped<TokenService>();
 
             return services;
         }

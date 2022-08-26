@@ -25,7 +25,7 @@ void ConfigureServices(WebApplicationBuilder builder)
     //});    
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     services.AddEndpointsApiExplorer();
-
+    services.AddHttpContextAccessor();
     services.AddApplicationServices(builder.Configuration);
     services.AddIdentityServices(builder.Configuration);
 }
