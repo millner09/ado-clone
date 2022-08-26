@@ -33,7 +33,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpPost(Name = "GetWeatherAuth")]
-    public IEnumerable<WeatherForecast> GetWeatherAuth([FromBody] string arg = "sorrySwagger")
+    public IEnumerable<WeatherForecast> GetWeatherAuth()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {

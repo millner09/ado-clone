@@ -14,7 +14,7 @@ namespace Api.Extensions
             }).AddJwtBearer(options =>
             {
                 options.Authority = "https://millner.auth0.com/";
-                options.Audience = "https://amillner-bugtracker.com";
+                options.Audience = "https://amillner-ado-clone/";
             });
 
             return services;
