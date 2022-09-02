@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../environments/environment';
 
 import { Weather } from './weather';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -9,7 +10,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class WeatherService {
-  private apiUrl = 'http://localhost:5167/api/weatherforecast';
+  private apiUrl = `${environment.apiUrl}/weatherforecast`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
