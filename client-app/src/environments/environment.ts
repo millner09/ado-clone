@@ -8,6 +8,7 @@ export const environment = {
   auth0: {
     domain: 'millner.auth0.com',
     clientId: 'k4pavHGKY71S2MibLXJGsQGiTJ6MFtlO',
+    audience: 'https://amillner-ado-clone/',
   },
 };
 

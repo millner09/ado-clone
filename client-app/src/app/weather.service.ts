@@ -21,7 +21,7 @@ export class WeatherService {
   getWeather(): Observable<Weather[]> {
     return this.http.get<Weather[]>(this.apiUrl).pipe(
       tap((_) => console.log('fetched weather')),
-      catchError(this.handleError<Weather[]>('getHeroes', []))
+      catchError(this.handleError<Weather[]>('getWeather', []))
     );
   }
 
