@@ -9,7 +9,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class WeatherService {
-  private apiUrl = 'https://localhost:7106/api/weatherforecast';
+  private apiUrl = 'http://localhost:5167/api/weatherforecast';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
