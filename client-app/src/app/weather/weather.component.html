@@ -1,8 +1,8 @@
-<p>weather works!</p>
-<div *ngFor="let weather of weathers">
-    <p>Date: {{weather.date}}</p>
-    <p>Summary: {{weather.summary}}</p>
-    <p>TempC: {{weather.temperatureC}}</p>
-    <p>TempF: {{weather.temperatureF}}</p>
-    <hr />
+<div id="weatherContainer">
+
+    <mat-card *ngFor="let weather of weathers">
+        <mat-card-title>{{weather.date}}</mat-card-title>
+        <mat-card-subtitle>{{weather.summary}}</mat-card-subtitle>
+        <mat-card-content>{{weather.temperatureC}} || {{weather.temperatureF}}</mat-card-content>
+    </mat-card>
 </div>
