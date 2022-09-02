@@ -1,11 +1,6 @@
-﻿using Api.Services;
-using Domain;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Persistance;
 using System.Security.Claims;
-using System.Text;
 
 namespace Api.Extensions
 {
@@ -13,29 +8,20 @@ namespace Api.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<AppUser>(opt =>
-                       {
-                           opt.Password.RequireNonAlphanumeric = false;
-                       })
-                       .AddEntityFrameworkStores<DataContext>()
-                       .AddSignInManager<SignInManager<AppUser>>();
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opt =>
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
             {
-                opt.TokenValidationParameters = new TokenValidationParameters
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = config["Auth0:Domain"];
+                options.Audience = config["Auth0:Audience"];
+                // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    NameClaimType = ClaimTypes.NameIdentifier
                 };
             });
-
-            services.AddScoped<TokenService>();
-
             return services;
         }
     }
