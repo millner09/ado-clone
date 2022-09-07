@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Users;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace Api.Extensions
                 });
             });
 
-            //services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddMediatR(typeof(Get.Handler).Assembly);
             //services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
 

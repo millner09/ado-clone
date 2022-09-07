@@ -1,4 +1,7 @@
 ﻿using Application.Interfaces;
+using Application.Users;
+using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -7,19 +10,18 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IUserAccessor _userAccessor;
+        private readonly IMediator _mediator;
 
-
-        public AccountController(IUserAccessor userAccessor)
+        public AccountController(IMediator mediator)
         {
-            _userAccessor = userAccessor;
+            _mediator = mediator;
         }
 
         [HttpGet(Name = "GetProfile")]
-        public string Get()
+        public async Task<AppUser> Get()
         {
-            var username = _userAccessor.GetUserName();
-            return username;
+            var user = await _mediator.Send(new Get.Query());
+            return user;
         }
     }
 }

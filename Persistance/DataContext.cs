@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance
 {
@@ -7,5 +8,7 @@ namespace Persistance
         public DataContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<AppUser> AppUsers { get; set; }
     }
 }
