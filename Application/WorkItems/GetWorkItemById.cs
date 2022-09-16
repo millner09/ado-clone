@@ -52,12 +52,9 @@ namespace Application.WorkItems
             public async Task<QueryResult> Handle(Query request, CancellationToken cancellationToken)
             {
                 var workItems = await _context.WorkItems
-                    .FindAsync(request.Id);
-
-                await _context.Entry(workItems).Reference(wi => wi.WorkItemType).LoadAsync();
-                await _context.Entry(workItems).Reference(wi => wi.WorkItemState).LoadAsync();
-
-
+                    .Include(x => x.WorkItemState)
+                    .Include(x => x.WorkItemType)
+                    .FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 return _mapper.Map<QueryResult>(workItems);
             }
