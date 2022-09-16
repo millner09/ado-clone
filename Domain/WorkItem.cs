@@ -17,7 +17,7 @@ namespace Domain
         USERSTORY
     }
 
-    public class WorkItem 
+    public class WorkItem
     {
         public Guid Id { get; set; }
         public WorkItemType WorkItemType { get; set; }

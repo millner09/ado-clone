@@ -8,6 +8,6 @@ namespace Domain
     public class AppUser
     {
         public Guid Id { get; set; }
-        public string AuthProviderId { get; set; }
+        public string? AuthProviderId { get; set; }
     }
 }

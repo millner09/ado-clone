@@ -12,7 +12,7 @@ const Weathers = () => {
           audience: "https://amillner-ado-clone/",
         });
         const response = await fetch(
-          "http://localhost:5167/api/weatherforecast",
+          `${process.env.REACT_APP_API_URL}/weatherforecast`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
