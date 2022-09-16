@@ -10,5 +10,7 @@ namespace Persistance
         }
 
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<WorkItem> WorkItems { get; set; }
+        public DbSet<WorkItemState> WorkItemStates { get; set; }
     }
 }
