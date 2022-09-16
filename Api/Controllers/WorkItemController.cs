@@ -14,10 +14,12 @@ namespace Api.Controllers
     public class WorkItemController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger _logger;
 
-        public WorkItemController(IMediator mediator)
+        public WorkItemController(IMediator mediator, ILogger<WorkItemController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
 
@@ -30,11 +32,24 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<GetWorkItemById.QueryResult> GetWorkItemById(Guid id)
+        public async Task<IActionResult> GetWorkItemById(Guid id)
         {
-            var result = await _mediator.Send(new GetWorkItemById.Query(id));
+            try
+            {
+                var result = await _mediator.Send(new GetWorkItemById.Query(id));
 
-            return result;
+                if (result is null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong...");
+            }
+
+
         }
     }
 }
