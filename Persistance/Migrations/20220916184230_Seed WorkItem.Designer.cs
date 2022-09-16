@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance;
 
@@ -11,9 +12,10 @@ using Persistance;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220916184230_Seed WorkItem")]
+    partial class SeedWorkItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,15 +48,10 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("WorkItemStateId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("WorkItemTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("WorkItemStateId");
 
                     b.HasIndex("WorkItemTypeId");
 
@@ -63,10 +60,9 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a843d8fa-07f2-41ce-bf7b-95e2d832585a"),
+                            Id = new Guid("2e21d546-e35e-40da-878f-c99baeac247e"),
                             Title = "Seed User Story in Database",
-                            WorkItemStateId = new Guid("d0b1d039-42c8-4686-bb9d-217ea591acbc"),
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         });
                 });
 
@@ -94,38 +90,38 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d0b1d039-42c8-4686-bb9d-217ea591acbc"),
+                            Id = new Guid("af304833-a099-4103-81c1-6701d3ce7f23"),
                             Name = "New",
                             WorkItemBaseState = 0,
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         },
                         new
                         {
-                            Id = new Guid("72ad6b05-eebd-4f8d-8b51-34902a77e754"),
+                            Id = new Guid("ac23df95-30a9-4bd9-bd8f-db1ee4024525"),
                             Name = "Active",
                             WorkItemBaseState = 1,
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         },
                         new
                         {
-                            Id = new Guid("5e77b602-d769-41e9-85e6-91da32284057"),
+                            Id = new Guid("c32f27c7-b77d-494b-a5e7-c5846537562f"),
                             Name = "Resolved",
                             WorkItemBaseState = 1,
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         },
                         new
                         {
-                            Id = new Guid("6ade6878-0311-4454-8cc8-4ab2afc1582b"),
+                            Id = new Guid("2ea4afa0-b2cf-4cf1-bfa4-d8b975412ccb"),
                             Name = "Closed",
                             WorkItemBaseState = 2,
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         },
                         new
                         {
-                            Id = new Guid("250b3eb8-1100-454b-8ca5-dd840b45d354"),
+                            Id = new Guid("e25ee486-41aa-44b3-8897-95528d5b7b9d"),
                             Name = "Removed",
                             WorkItemBaseState = 3,
-                            WorkItemTypeId = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84")
+                            WorkItemTypeId = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c")
                         });
                 });
 
@@ -146,24 +142,18 @@ namespace Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4289d687-3f68-4079-9399-8dd6ba3b7d84"),
+                            Id = new Guid("5fe4f257-f7a3-4996-9818-b72098dcb59c"),
                             Name = "User Story"
                         });
                 });
 
             modelBuilder.Entity("Domain.WorkItem", b =>
                 {
-                    b.HasOne("Domain.WorkItemState", "WorkItemState")
-                        .WithMany()
-                        .HasForeignKey("WorkItemStateId");
-
                     b.HasOne("Domain.WorkItemType", "WorkItemType")
                         .WithMany()
                         .HasForeignKey("WorkItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("WorkItemState");
 
                     b.Navigation("WorkItemType");
                 });

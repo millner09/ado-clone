@@ -17,6 +17,9 @@ namespace Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var userStoryId = Guid.NewGuid();
+            var workItemId = Guid.NewGuid();
+            var baseWorkItemStateId = Guid.NewGuid();
+
             modelBuilder.Entity<WorkItemType>()
             .HasData(
                 new WorkItemType
@@ -30,7 +33,7 @@ namespace Persistance
             .HasData(
                 new WorkItemState
                 {
-                    Id = Guid.NewGuid(),
+                    Id = baseWorkItemStateId,
                     Name = "New",
                     WorkItemBaseState = WorkItemBaseState.PROPOSED,
                     WorkItemTypeId = userStoryId
@@ -62,6 +65,17 @@ namespace Persistance
                     WorkItemTypeId = userStoryId
                 }
             );
+
+            modelBuilder.Entity<WorkItem>()
+                .HasData(
+                    new WorkItem
+                    {
+                        Id = workItemId,
+                        WorkItemTypeId = userStoryId,
+                        Title = "Seed User Story in Database",
+                        WorkItemStateId = baseWorkItemStateId
+                    }
+                );
         }
     }
 }
