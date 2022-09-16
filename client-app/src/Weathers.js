@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Posts = () => {
+const Weathers = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [weathers, setWeathers] = useState(null);
 
@@ -46,4 +46,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Weathers;
