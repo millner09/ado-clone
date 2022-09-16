@@ -9,9 +9,8 @@ namespace Domain
     public enum WorkItemBaseState
     {
         PROPOSED,
-        ACTIVE,
-        RESOLVED,
-        CLOSED,
+        INPROGRESS,
+        COMPLETED,
         REMOVED
 
     }
@@ -20,6 +19,7 @@ namespace Domain
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public WorkItemBaseState WorkItemBaseState { get; set; }
-        public bool Default { get; set; } = false;
+        public WorkItemType? WorkItemType { get; set; }
+        public Guid WorkItemTypeId { get; set; }
     }
 }

@@ -11,6 +11,57 @@ namespace Persistance
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<WorkItem> WorkItems { get; set; }
+        public DbSet<WorkItemType> WorkItemTypes { get; set; }
         public DbSet<WorkItemState> WorkItemStates { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var userStoryId = Guid.NewGuid();
+            modelBuilder.Entity<WorkItemType>()
+            .HasData(
+                new WorkItemType
+                {
+                    Id = userStoryId,
+                    Name = "User Story",
+                }
+            );
+
+            modelBuilder.Entity<WorkItemState>()
+            .HasData(
+                new WorkItemState
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "New",
+                    WorkItemBaseState = WorkItemBaseState.PROPOSED,
+                    WorkItemTypeId = userStoryId
+                },
+                new WorkItemState
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Active",
+                    WorkItemBaseState = WorkItemBaseState.INPROGRESS,
+                    WorkItemTypeId = userStoryId
+                }, new WorkItemState
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Resolved",
+                    WorkItemBaseState = WorkItemBaseState.INPROGRESS,
+                    WorkItemTypeId = userStoryId
+                }, new WorkItemState
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Closed",
+                    WorkItemBaseState = WorkItemBaseState.COMPLETED,
+                    WorkItemTypeId = userStoryId
+                },
+                new WorkItemState
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Removed",
+                    WorkItemBaseState = WorkItemBaseState.REMOVED,
+                    WorkItemTypeId = userStoryId
+                }
+            );
+        }
     }
 }
