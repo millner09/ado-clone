@@ -24,7 +24,7 @@ namespace Api.Extensions
 
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(config.GetConnectionString("DbConnectionString"));
             });
 
             services.AddCors(opt =>
