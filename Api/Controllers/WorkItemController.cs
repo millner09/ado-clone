@@ -43,9 +43,9 @@ namespace Api.Controllers
 
                 return Ok(result);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-               return Error(e);
+                return Error(e);
             }
         }
 
@@ -64,11 +64,25 @@ namespace Api.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWorkItem(Guid id)
+        {
+            try
+            {
+                await _mediator.Send(new DeleteWorkItem.Command(id));
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Error(e);
+            }
+        }
+
 
         private IActionResult Error(Exception e)
         {
             var exp = e;
-            while(exp is not null)
+            while (exp is not null)
             {
                 _logger.LogError(exp.Message);
                 exp = exp.InnerException;
