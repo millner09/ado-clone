@@ -45,11 +45,35 @@ namespace Api.Controllers
             }
             catch(Exception e)
             {
-                _logger.LogError(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong...");
+               return Error(e);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateWorkItem([FromBody] CreateWorkItem.Command command)
+        {
+            try
+            {
+                var res = await _mediator.Send(command);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Error(e);
             }
 
+        }
 
+
+        private IActionResult Error(Exception e)
+        {
+            var exp = e;
+            while(exp is not null)
+            {
+                _logger.LogError(exp.Message);
+                exp = exp.InnerException;
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong...");
         }
     }
 }
