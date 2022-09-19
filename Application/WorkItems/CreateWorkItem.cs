@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Persistance;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace Application.WorkItems
         public class Command : IRequest<CommandResult>
         {
             public string Title { get; set; } = "";
-            public Guid WorkItemType { get; set; }
-            public Guid WorkItemState { get; set; }
+            public Guid WorkItemTypeId { get; set; }
+            public Guid WorkItemStateId { get; set; }
         }
 
 
@@ -24,29 +25,20 @@ namespace Application.WorkItems
         {
             public Guid Id { get; set; }
             public string Title { get; set; } = "";
-            public string WorkItemType { get; set; } = "";
-            public string WorkItemState { get; set; } = "";
+            public string WorkItemType { get; set; }
+            public string WorkItemState { get; set; }
         }
 
         public class MappingProfile : Profile
         {
             public MappingProfile()
             {
-                CreateMap<Command, WorkItem>()
-                    .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-                    .ForMember(dest => dest.WorkItemType, opt => opt.MapFrom(src => src.WorkItemType))
-                    .ForMember(dest => dest.WorkItemState, opt => opt.MapFrom(src => src.WorkItemState));
-
-                CreateMap<Command, WorkItemType>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.WorkItemType));
-
-                CreateMap<Command, WorkItemState>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.WorkItemState));
+                CreateMap<Command, WorkItem>();
 
                 CreateMap<WorkItem, CommandResult>()
                     .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-                    .ForMember(dest => dest.WorkItemType, opt => opt.MapFrom(src => src.WorkItemType.Name))
-                    .ForMember(dest => dest.WorkItemState, opt => opt.MapFrom(src => src.WorkItemState.Name));
+                    .ForMember(dest => dest.WorkItemState, opt => opt.MapFrom(src => src.WorkItemState.Name))
+                    .ForMember(dest => dest.WorkItemType, opt => opt.MapFrom(src => src.WorkItemType.Name));
             }
         }
 
@@ -63,9 +55,19 @@ namespace Application.WorkItems
 
             public async Task<CommandResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var workItem = _mapper.Map<WorkItem>(command);
+                var workItem = _mapper.Map<Command, WorkItem>(command);
+                //var workItem = new WorkItem()
+                //{
+                //    Title = command.Title,
+                //    WorkItemTypeId = command.WorkItemType,
+                //    WorkItemStateId = command.WorkItemState
+                //};
+
                 _context.Add(workItem);
                 await _context.SaveChangesAsync();
+
+                await _context.Entry(workItem).Reference(c => c.WorkItemType).LoadAsync();
+                await _context.Entry(workItem).Reference(c => c.WorkItemState).LoadAsync();
 
                 return _mapper.Map<CommandResult>(workItem);
             }
