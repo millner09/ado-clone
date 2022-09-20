@@ -34,5 +34,15 @@ namespace Api.Controllers
             var res = await _mediator.Send(new GetWorkItemTypes.Query());
             return Ok(res);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetWorkItemTypeById(Guid id)
+        {
+            var res = await _mediator.Send(new GetWorkItemTypeById.Query(id));
+            if (res is null)
+                return NotFound();
+
+            return Ok(res);
+        }
     }
 }
