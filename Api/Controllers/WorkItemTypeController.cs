@@ -68,12 +68,30 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWorkItem(Guid id)
+        public async Task<IActionResult> DeleteWorkItemType(Guid id)
         {
             try
             {
                 await _mediator.Send(new DeleteWorkItemType.Command(id));
-                return StatusCode(204);
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateWorkItemType(Guid id, [FromBody] UpdateWorkItemType.CommandBody body)
+        {
+            try
+            {
+                var res = await _mediator.Send(new UpdateWorkItemType.Command(id, body));
+
+                if (res is null)
+                    return BadRequest();
+
+                return Ok(res);
             }
             catch (Exception e)
             {

@@ -75,5 +75,22 @@ namespace Api.Controllers
                 return Error(_logger, e);
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateWorkItem(Guid id, [FromBody] UpdateWorkItem.CommandBody body)
+        {
+            try
+            {
+                var res = await _mediator.Send(new UpdateWorkItem.Command(id, body));
+                if (res is null)
+                    return BadRequest();
+
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
+        }
     }
 }

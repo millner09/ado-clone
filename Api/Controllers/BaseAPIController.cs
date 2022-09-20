@@ -19,7 +19,7 @@ namespace Api.Controllers
                 logger.LogError(exp.Message);
                 exp = exp.InnerException;
             }
-            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong...");
+            return Problem("Something went wrong...");
         }
     }
 }
