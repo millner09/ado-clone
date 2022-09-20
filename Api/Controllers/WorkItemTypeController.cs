@@ -65,8 +65,6 @@ namespace Api.Controllers
             {
                 return Error(_logger, e);
             }
-
-
         }
     }
 }

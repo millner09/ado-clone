@@ -18,11 +18,11 @@ namespace Infrastructure.Security
             this.httpContextAccesor = httpContextAccesor;
         }
 
-        public string GetUserName()
+        public string? GetUserName()
         {
-            var user = httpContextAccesor.HttpContext.User;
+            var user = httpContextAccesor?.HttpContext?.User;
 
-            return user.Identity.Name;
+            return user?.Identity?.Name;
         }
     }
 }
