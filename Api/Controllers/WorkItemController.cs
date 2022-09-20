@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class WorkItemController : ControllerBase
+    public class WorkItemController : BaseAPIController
     {
         private readonly IMediator _mediator;
         private readonly ILogger _logger;
@@ -45,7 +43,7 @@ namespace Api.Controllers
             }
             catch (Exception e)
             {
-                return Error(e);
+                return Error(_logger, e);
             }
         }
 
@@ -59,7 +57,7 @@ namespace Api.Controllers
             }
             catch (Exception e)
             {
-                return Error(e);
+                return Error(_logger, e);
             }
 
         }
@@ -74,20 +72,8 @@ namespace Api.Controllers
             }
             catch (Exception e)
             {
-                return Error(e);
+                return Error(_logger, e);
             }
-        }
-
-
-        private IActionResult Error(Exception e)
-        {
-            var exp = e;
-            while (exp is not null)
-            {
-                _logger.LogError(exp.Message);
-                exp = exp.InnerException;
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong...");
         }
     }
 }

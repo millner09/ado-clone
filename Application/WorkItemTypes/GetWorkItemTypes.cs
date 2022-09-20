@@ -18,7 +18,7 @@ namespace Application.WorkItemTypes
         public class QueryResponse
         {
             public Guid Id { get; set; }
-            public string Name { get; set; }
+            public string Name { get; set; } = String.Empty;
         }
 
         public class MappingProfile : Profile
@@ -41,7 +41,6 @@ namespace Application.WorkItemTypes
             public async Task<IEnumerable<QueryResponse>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var workItemTypes = await _context.WorkItemTypes.ToListAsync();
-
                 return _mapper.Map<IEnumerable<QueryResponse>>(workItemTypes);
             }
         }

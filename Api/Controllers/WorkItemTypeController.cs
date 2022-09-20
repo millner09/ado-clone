@@ -9,40 +9,64 @@ using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class WorkItemTypeController : ControllerBase
+    public class WorkItemTypeController : BaseAPIController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<WorkItemTypeController> _logger;
 
-        public WorkItemTypeController(IMediator mediator)
+        public WorkItemTypeController(IMediator mediator, ILogger<WorkItemTypeController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
 
         [HttpPost]
         public async Task<IActionResult> CreateWorkItemType(CreateWorkItemType.Command command)
         {
-            var res = await _mediator.Send(command);
-            return Ok(res);
+            try
+            {
+                var res = await _mediator.Send(command);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetWorkItemTypes()
         {
-            var res = await _mediator.Send(new GetWorkItemTypes.Query());
-            return Ok(res);
+            try
+            {
+                var res = await _mediator.Send(new GetWorkItemTypes.Query());
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
+
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWorkItemTypeById(Guid id)
         {
-            var res = await _mediator.Send(new GetWorkItemTypeById.Query(id));
-            if (res is null)
-                return NotFound();
+            try
+            {
+                var res = await _mediator.Send(new GetWorkItemTypeById.Query(id));
+                if (res is null)
+                    return NotFound();
+                
+                return Ok(res); 
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
 
-            return Ok(res);
+
         }
     }
 }
