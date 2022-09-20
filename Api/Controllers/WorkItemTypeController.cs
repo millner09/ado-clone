@@ -66,5 +66,19 @@ namespace Api.Controllers
                 return Error(_logger, e);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWorkItem(Guid id)
+        {
+            try
+            {
+                await _mediator.Send(new DeleteWorkItemType.Command(id));
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
+        }
     }
 }
