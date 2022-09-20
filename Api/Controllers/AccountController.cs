@@ -6,22 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseAPIController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IMediator mediator)
+        public AccountController(IMediator mediator, ILogger<AccountController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpGet(Name = "GetProfile")]
-        public async Task<AppUser> Get()
+        public async Task<IActionResult> Get()
         {
-            var user = await _mediator.Send(new Get.Query());
-            return user;
+            try
+            {
+                var user = await _mediator.Send(new Get.Query());
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return Error(_logger, e);
+            }
         }
     }
 }

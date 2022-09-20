@@ -24,9 +24,9 @@ namespace Application.WorkItems
         public class CommandResult
         {
             public Guid Id { get; set; }
-            public string Title { get; set; } = "";
-            public string WorkItemType { get; set; }
-            public string WorkItemState { get; set; }
+            public string Title { get; set; } = String.Empty;
+            public string WorkItemType { get; set; } = String.Empty;
+            public string WorkItemState { get; set; } = String.Empty;
         }
 
         public class MappingProfile : Profile
