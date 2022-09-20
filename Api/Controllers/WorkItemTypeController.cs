@@ -22,7 +22,7 @@ namespace Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateWorkItemType(CreateWorkItemType.Command command)
+        public async Task<IActionResult> CreateWorkItemType([FromBody] CreateWorkItemType.Command command)
         {
             try
             {
