@@ -27,5 +27,12 @@ namespace Api.Controllers
             var res = await _mediator.Send(command);
             return Ok(res);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetWorkItemTypes()
+        {
+            var res = await _mediator.Send(new GetWorkItemTypes.Query());
+            return Ok(res);
+        }
     }
 }
