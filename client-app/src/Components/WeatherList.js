@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import Weather from "./Weather";
 
-const Weathers = () => {
+const WeatherList = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [weathers, setWeathers] = useState(null);
 
@@ -22,7 +23,6 @@ const Weathers = () => {
 
         var body = await response.json();
         setWeathers(body);
-        console.log(body);
       } catch (e) {
         console.error(e);
       }
@@ -34,16 +34,12 @@ const Weathers = () => {
   }
 
   return (
-    <ul>
-      {weathers.map((weather, index) => {
-        return (
-          <li key={index}>
-            {weather.date} - {weather.temperatureF}
-          </li>
-        );
-      })}
-    </ul>
+    weathers.map((weather, index) => {
+      return (
+        <Weather key={index} weather={weather} />
+      );
+    })
   );
 };
 
-export default Weathers;
+export default WeatherList;
