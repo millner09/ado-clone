@@ -1,7 +1,7 @@
 // src/App.js
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import WeatherList from "./Components/WeatherList";
+import WorkItemList from "./components/WorkItemList";
 
 function App() {
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
@@ -21,7 +21,7 @@ function App() {
         <button onClick={() => logout({ returnTo: window.location.origin })}>
           Log out
         </button>
-        <WeatherList />
+        <WorkItemList />
       </div>
     );
   } else {
