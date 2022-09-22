@@ -1,9 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
+import WorkItemList from "./components/WorkItemList"
 import reportWebVitals from "./reportWebVitals";
 import { Auth0Provider } from "@auth0/auth0-react";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+} from "react-router-dom";
+import NavBar from "./components/NavBar";
+import WorkItemTypeList from "./components/WorkItemTypeList";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +20,16 @@ root.render(
     clientId="k4pavHGKY71S2MibLXJGsQGiTJ6MFtlO"
     redirectUri={window.location.origin}
   >
-    <App />
+    <React.StrictMode>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/workItems" element={<WorkItemList />} />
+          <Route path="/workItemTypes" element={<WorkItemTypeList />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
   </Auth0Provider>
 );
 

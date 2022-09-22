@@ -1,10 +1,10 @@
 // src/App.js
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import WorkItemList from "./components/WorkItemList";
+import { Link } from "react-router-dom";
 
 function App() {
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
+  const { isLoading, isAuthenticated, error } =
     useAuth0();
 
   if (isLoading) {
@@ -17,15 +17,18 @@ function App() {
   if (isAuthenticated) {
     return (
       <div>
-        Hello {user.name}{" "}
-        <button onClick={() => logout({ returnTo: window.location.origin })}>
-          Log out
-        </button>
-        <WorkItemList />
+        <div>
+          <Link to={"workItems"}>
+            Work Items
+          </Link>
+        </div>
+        <div>
+          <Link to={"workItemTypes"}>
+            Work Item Types
+          </Link>
+        </div>
       </div>
     );
-  } else {
-    return <button onClick={loginWithRedirect}>Log in</button>;
   }
 }
 
